@@ -2,3 +2,7 @@
 dataset_dummy/
 
 src/pitipat/data/MNIST/raw/
+
+*.csv
+
+*.pth
