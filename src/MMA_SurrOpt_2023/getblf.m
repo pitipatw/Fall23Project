@@ -1,7 +1,7 @@
 function [blf] = getblf(x0)
 pkg load image
-nelx = 64;
-nely = 240;
+nelx = 240;
+nely = 120;
 penalK = 3;
 rmin = 4;
 ft = 2;
