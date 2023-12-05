@@ -8,3 +8,5 @@ src/pitipat/data/MNIST/raw/
 *.pth
 
 Fall23Project.git/
+
+src/pitipat/data2000/Images/
