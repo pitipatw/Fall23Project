@@ -2,7 +2,7 @@ function [blf] = getblf(x0)
 pkg load image
 nelx = 240;
 nely = 120;
-penalK = 3;
+penalK = 1;
 rmin = 4;
 ft = 2;
 ftBC = 'N';
@@ -12,6 +12,8 @@ ocPar = [0.1,0.7,1.2];
 maxit = 1;
 Lx = 2;
 penalG = 3;
+% penalG = 1;
+
 nEig = 6;
 pAgg = 200;
 prSel = {['B','C','V'],[2.5,0.25]};
