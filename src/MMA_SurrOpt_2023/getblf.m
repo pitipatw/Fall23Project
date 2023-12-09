@@ -41,6 +41,7 @@ prSel = {['B','C','V'],[2.5,0.25]};
 ocPar = [0.1,0.7,1.2];
 asyincr_inp = 1.1;
 asydecr_inp = 0.8;
+betaCnt = {400,50,25,2};
 
 
 

@@ -129,17 +129,18 @@ ddMMA = zeros(m,1);       % Column vector with the constants d_i in the terms 0.
 while loop < maxit && ch > 1e-6
   loop = loop+1;                                                           % update iteration counter
   % --------------------------------- RL. 1) COMPUTE PHYSICAL DENSITY FIELD
-  xTilde = imfilter(reshape(x,nely,nelx),h,bcF)./Hs;                       % compute filtered field
+  xTilde = x; %imfilter(reshape(x,nely,nelx),h,bcF)./Hs;                       % compute filtered field
   xPhys(act) = xTilde(act);                                                % modify active elements only
-  if ft > 1                                                                % apply projection
-      f = (mean(prj(xPhys,eta,beta))-volfrac)*(ft==3);                     % function (volume of x-projected)
-      while abs(f) > 1e-6 && prSel{1}(1) ~= 'V'                            % Newton loop for finding opt. eta
-          eta = eta-f/mean(deta(xPhys(:),eta,beta));
-          f = mean(prj(xPhys,eta,beta))-volfrac;
-      end
-      dHs = Hs./reshape(dprj(xPhys,eta,beta),nely,nelx);                   % modification of the sensitivity
-      xPhys = prj(xPhys,eta,beta);                                         % compute projected field
-  end
+%   if ft > 1                                                                % apply projection
+%       f = (mean(prj(xPhys,eta,beta))-volfrac)*(ft==3);                     % function (volume of x-projected)
+%       while abs(f) > 1e-6 && prSel{1}(1) ~= 'V'                            % Newton loop for finding opt. eta
+%           eta = eta-f/mean(deta(xPhys(:),eta,beta));
+%           f = mean(prj(xPhys,eta,beta))-volfrac;
+%       end
+%       dHs = Hs./reshape(dprj(xPhys,eta,beta),nely,nelx);                   % modification of the sensitivity
+%       xPhys = prj(xPhys,eta,beta);                                         % compute projected field
+%   end
+  xPhys = xPhys(:);
   ch = max(abs(xPhys-xpOld)); xpOld = xPhys;
   % -------------------------- RL. 2) SETUP AND SOLVE EQUILIBRIUM EQUATIONS
   sK = (Emin+xPhys.^penalK*(E0-Emin));                                     % stiffness interpolation
@@ -181,7 +182,7 @@ while loop < maxit && ch > 1e-6
   % ------------------------------ RL. 4) SOLVE BUCKLING EIGENVALUE PROBLEM
   matFun = @(x) dK\(G(free,free)*x);                                       % matrix action function
   opts.tol = 1e-3;
-  [eivecs,D] = eigs(matFun,length(free));
+  [eivecs,D] = eigs(matFun,length(free), nEig);
   %[eivecs,D] = eigs(matFun,length(free),nEig+4,"sa", opts);                      % compute eigenvalues
   [mu,ii] = sort(diag(-D),'descend');                                      % sorting of eigenvalues (mu=-D(i))
   eivSort = eivecs(:,ii(1:nEig));                                          % sort eigenvectors accordingly
@@ -265,8 +266,8 @@ while loop < maxit && ch > 1e-6
   xOld1 = xOld; xOld = x(act); x(act) = xMMA;
 
   % ----------------------------------------- RL. 8) PRINT AND PLOT RESULTS
-  fprintf('It.:%2i g0:%7.4f g1:%0.2e penalK:%7.2f penalG:%7.2f eta:%7.2f beta:%7.1f ch:%0.3e lm:%0.3e\n', ...
-    loop,g0,g1,penalK,penalG,eta,beta,ch,lmid);
+%   fprintf('It.:%2i g0:%7.4f g1:%0.2e penalK:%7.2f penalG:%7.2f eta:%7.2f beta:%7.1f ch:%0.3e lm:%0.3e\n', ...
+%     loop,g0,g1,penalK,penalG,eta,beta,ch,lmid);
   % if any(prSel{1} == 'B')  % plot design, g0 & g1 evolution, BLFs evolution
   %     subplot(2,2,1:2);
   %     colormap(gray); imagesc(1-reshape(xPhys,nely,nelx));
@@ -277,9 +278,9 @@ while loop < maxit && ch > 1e-6
   %     subplot(2,2,4)
   %     plot(1:loop,1./muVec(:,1:4)); title('Lowest BLFs');
   % else                                       % plot the current design only
-  figure(1)
-      colormap(gray); imagesc(1-reshape(xPhys,nely,nelx));
-      caxis([ 0,1]); axis equal; axis off; drawnow;
+%   figure(1)
+%       colormap(gray); imagesc(1-reshape(xPhys,nely,nelx));
+%       caxis([ 0,1]); axis equal; axis off; drawnow;
   % end
   %  apply continuation on penalization(s), beta & aggregation parameter(s)
   penalKold = penalK; penalGold = penalG; betaOld = beta;
