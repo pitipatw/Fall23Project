@@ -12,7 +12,7 @@ ocPar = [0.1,0.7,1.2];
 maxit = 1;
 Lx = 2;
 penalG = 3;
-% penalG = 1;
+
 
 nEig = 6;
 pAgg = 200;
@@ -22,6 +22,28 @@ prSel = {['B','C','V'],[2.5,0.25]};
 betaCnt = {400,24,25,2};
 asyincr_inp = 1.1;
 asydecr_inp = 0.7;
+
+%new parameters
+
+rmin = 3;
+penalK = 1;
+penalG = 1; 
+pAgg0 = 150;
+
+
+nEig = 7;
+Lx = 2;
+ft = 2; 
+eta = 0.5;
+beta = 2;
+
+prSel = {['B','C','V'],[2.5,0.25]};
+ocPar = [0.1,0.7,1.2];
+asyincr_inp = 1.1;
+asydecr_inp = 0.8;
+
+
+
 
 [blf,xpOut_reshape] = topBuck250_Column_MMA_BLF_calc(nelx,nely,penalK,rmin,ft,ftBC,eta,beta,ocPar,maxit,Lx,penalG,nEig,pAgg,prSel,x0,betaCnt,asyincr_inp,asydecr_inp);
 % save(strcat("blf",x0,".mat"), "blf", "-v6");
